@@ -56,8 +56,11 @@ class WP_Sailthru_Client extends Sailthru_Client {
                 throw new Sailthru_Client_Exception("Bad response received from $url: " . $reply->get_error_message() );
             } else {
 
-                if( wp_remote_retrieve_response_code( $reply ) == 200 ) {
-                   return $reply['body']; 
+                if( wp_remote_retrieve_response_code( $reply ) !== 200 ) {
+                    throw new Sailthru_Client_Exception( $reply['body'] );
+                }
+                else {
+                    return $reply['body'];
                 }
                 
             }
